@@ -50,13 +50,13 @@ fun HomeScreen(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Daffa Putera Kouseina",
+                    text = viewModel.getUserName(),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
-                    text = "NIM: STI202303773",
+                    text = "NIM: ${viewModel.getUserNIM()}",
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
                 )

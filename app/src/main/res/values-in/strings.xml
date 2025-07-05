@@ -55,7 +55,7 @@
     <string name="categories">Kategori</string>
     <string name="no_categories_yet">Belum ada kategori</string>
     <string name="categories_will_appear">Kategori akan muncul di sini ketika Anda membuat tugas</string>
-    <string name="active_tasks_count">%d aktif, %d total</string>
+    <string name="active_tasks_count" formatted="false">%d aktif, %d total</string>
     
     <!-- Statistics Screen -->
     <string name="statistics">Statistik</string>

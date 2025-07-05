@@ -16,12 +16,13 @@ Aplikasi daftar tugas (ToDo List) yang modern dan intuitif untuk Android, dibang
 ## 🛠️ Teknologi yang Digunakan
 
 - **Jetpack Compose**: UI toolkit modern untuk Android
-- **Room Database**: Database lokal untuk penyimpanan data
+- **SQLite Database**: Database lokal untuk penyimpanan data tugas
+- **SharedPreferences**: Penyimpanan preferensi pengguna dan kategori
 - **ViewModel & LiveData**: Arsitektur MVVM untuk manajemen state
 - **Navigation Compose**: Navigasi antar halaman
 - **Material Design 3**: Sistem desain yang konsisten
 - **Kotlin Coroutines**: Pemrograman asynchronous
-- **Dependency Injection**: Hilt untuk injeksi dependensi
+- **Gson**: Serialisasi JSON untuk SharedPreferences
 
 ## 📱 Screenshots
 
@@ -101,11 +102,12 @@ app/
 
 Aplikasi mengikuti arsitektur **MVVM (Model-View-ViewModel)** dengan komponen-komponen berikut:
 
-- **Model**: Entity data (Todo, Category) dan DAO
+- **Model**: Entity data (Todo, Category)
 - **View**: Jetpack Compose UI components
 - **ViewModel**: Business logic dan state management
 - **Repository**: Data access layer
-- **Database**: Room database untuk penyimpanan lokal
+- **Database**: SQLite database untuk penyimpanan tugas
+- **SharedPreferences**: Penyimpanan preferensi dan kategori
 
 ## 🌍 Lokalisasi
 
@@ -121,9 +123,10 @@ Untuk menambah bahasa baru:
 ## 🔧 Konfigurasi
 
 ### Database
-- Database: Room SQLite
-- Migrasi: Otomatis dengan Room
+- Database: SQLite Native
+- Migrasi: Manual dengan SQLiteOpenHelper
 - Backup: Mendukung Android Auto Backup
+- SharedPreferences: Penyimpanan preferensi dan kategori
 
 ### Build Configuration
 - Min SDK: 24 (Android 7.0)
@@ -141,10 +144,11 @@ implementation("androidx.compose.ui:ui-tooling-preview")
 // Navigation
 implementation("androidx.navigation:navigation-compose")
 
-// Room Database
-implementation("androidx.room:room-runtime")
-implementation("androidx.room:room-ktx")
-kapt("androidx.room:room-compiler")
+// SQLite & SharedPreferences
+// Built-in Android APIs, no additional dependencies needed
+
+// Gson for JSON serialization
+implementation("com.google.code.gson:gson:2.10.1")
 
 // ViewModel & LiveData
 implementation("androidx.lifecycle:lifecycle-viewmodel-compose")

@@ -35,14 +35,7 @@ class TodoViewModel(private val repository: TodoRepository) : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val todo = Todo(
-                    title = title,
-                    description = description,
-                    priority = priority,
-                    category = category,
-                    dueDate = dueDate
-                )
-                repository.insertTodo(todo)
+                repository.insertTodo(title, description, priority, category, dueDate)
             } finally {
                 _isLoading.value = false
             }
@@ -81,6 +74,17 @@ class TodoViewModel(private val repository: TodoRepository) : ViewModel() {
     fun clearSelectedTodo() {
         _selectedTodo.value = null
     }
+
+    // User preferences
+    fun getUserName(): String = repository.getUserName()
+    fun getUserNIM(): String = repository.getUserNIM()
+    fun saveUserInfo(name: String, nim: String) = repository.saveUserInfo(name, nim)
+    
+    fun isDarkMode(): Boolean = repository.isDarkMode()
+    fun setDarkMode(isDarkMode: Boolean) = repository.setDarkMode(isDarkMode)
+    
+    fun isFirstLaunch(): Boolean = repository.isFirstLaunch()
+    fun setFirstLaunch(isFirstLaunch: Boolean) = repository.setFirstLaunch(isFirstLaunch)
 }
 
 class TodoViewModelFactory(private val repository: TodoRepository) : ViewModelProvider.Factory {

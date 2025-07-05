@@ -55,7 +55,7 @@
     <string name="categories">Categories</string>
     <string name="no_categories_yet">No categories yet</string>
     <string name="categories_will_appear">Categories will appear here when you create tasks</string>
-    <string name="active_tasks_count">%d active, %d total</string>
+    <string name="active_tasks_count" formatted="false">%d active, %d total</string>
     
     <!-- Statistics Screen -->
     <string name="statistics">Statistics</string>

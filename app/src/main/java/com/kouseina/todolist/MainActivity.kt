@@ -14,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.kouseina.todolist.data.database.TodoDatabase
+import com.kouseina.todolist.data.database.DataInitializer
 import com.kouseina.todolist.navigation.TodoNavigation
 import com.kouseina.todolist.repository.TodoRepository
 import com.kouseina.todolist.ui.theme.ToDoListTheme
@@ -25,6 +25,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        
+        // Initialize default data
+        DataInitializer.initializeDefaultData(this)
+        
         setContent {
             ToDoListTheme {
                 TodoApp()
@@ -40,9 +44,8 @@ fun TodoApp() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    // Initialize database and repository
-    val database = TodoDatabase.getDatabase(androidx.compose.ui.platform.LocalContext.current)
-    val repository = TodoRepository(database.todoDao())
+    // Initialize repository
+    val repository = TodoRepository(androidx.compose.ui.platform.LocalContext.current)
     val viewModel: TodoViewModel = viewModel(
         factory = TodoViewModelFactory(repository)
     )

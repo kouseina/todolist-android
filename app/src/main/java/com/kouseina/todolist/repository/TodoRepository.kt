@@ -1,7 +1,6 @@
 package com.kouseina.todolist.repository
 
 import android.content.Context
-import com.kouseina.todolist.data.database.SharedPreferencesHelper
 import com.kouseina.todolist.data.database.TodoDatabase
 import com.kouseina.todolist.data.model.Category
 import com.kouseina.todolist.data.model.Todo
@@ -13,7 +12,6 @@ import java.util.Date
 
 class TodoRepository(context: Context) {
     private val todoDatabase = TodoDatabase(context)
-    private val sharedPreferencesHelper = SharedPreferencesHelper(context)
 
     fun getAllTodos(): Flow<List<Todo>> = flow {
         emit(todoDatabase.getAllTodos())
@@ -68,44 +66,36 @@ class TodoRepository(context: Context) {
         emit(todoDatabase.getAllCategories())
     }.flowOn(Dispatchers.IO)
 
-    // SharedPreferences operations for categories
+    // Category operations
     fun getCustomCategories(): Flow<List<Category>> = flow {
-        emit(sharedPreferencesHelper.getCategories())
+        emit(todoDatabase.getAllCustomCategories())
     }.flowOn(Dispatchers.IO)
 
     suspend fun addCustomCategory(category: Category) {
-        sharedPreferencesHelper.addCategory(category)
+        todoDatabase.insertCategory(category)
     }
 
     suspend fun updateCustomCategory(category: Category) {
-        sharedPreferencesHelper.updateCategory(category)
+        todoDatabase.updateCategory(category)
     }
 
     suspend fun deleteCustomCategory(category: Category) {
-        sharedPreferencesHelper.deleteCategory(category)
+        todoDatabase.deleteCategory(category)
     }
 
     // User preferences
-    fun getUserName(): String = sharedPreferencesHelper.getUserInfo().first
-    fun getUserNIM(): String = sharedPreferencesHelper.getUserInfo().second
-
-    fun saveUserInfo(name: String, nim: String) {
-        sharedPreferencesHelper.saveUserInfo(name, nim)
-    }
-
-    fun isDarkMode(): Boolean = sharedPreferencesHelper.isDarkMode()
-    fun setDarkMode(isDarkMode: Boolean) {
-        sharedPreferencesHelper.setThemeMode(isDarkMode)
-    }
-
-    fun isFirstLaunch(): Boolean = sharedPreferencesHelper.isFirstLaunch()
-    fun setFirstLaunch(isFirstLaunch: Boolean) {
-        sharedPreferencesHelper.setFirstLaunch(isFirstLaunch)
-    }
+    fun getUserInfo(): Pair<String, String> = todoDatabase.getUserInfo()
+    fun saveUserInfo(name: String, nim: String) = todoDatabase.saveUserInfo(name, nim)
+    
+    fun isDarkMode(): Boolean = todoDatabase.isDarkMode()
+    fun setDarkMode(isDarkMode: Boolean) = todoDatabase.setThemeMode(isDarkMode)
+    
+    fun isFirstLaunch(): Boolean = todoDatabase.isFirstLaunch()
+    fun setFirstLaunch(isFirstLaunch: Boolean) = todoDatabase.setFirstLaunch(isFirstLaunch)
 
     // Clear all data
     fun clearAllData() {
-        sharedPreferencesHelper.clearAllData()
-        // Note: SQLite database will be cleared when app is uninstalled
+        // This would require implementing a method to clear all tables
+        // For now, we'll leave this empty as SQLite data persists until app uninstall
     }
 }

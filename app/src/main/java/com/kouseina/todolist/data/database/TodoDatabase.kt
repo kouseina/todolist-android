@@ -63,15 +63,34 @@ class TodoDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL(CREATE_TABLE_TODOS)
-        db.execSQL(CREATE_TABLE_CATEGORIES)
+        createTables(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        // Drop all tables and recreate
         db.execSQL("DROP TABLE IF EXISTS $TABLE_TODOS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_CATEGORIES")
-        onCreate(db)
+        db.execSQL("DROP TABLE IF EXISTS user_preferences")
+        createTables(db)
     }
+
+    private fun createTables(db: SQLiteDatabase) {
+        db.execSQL(CREATE_TABLE_TODOS)
+        db.execSQL(CREATE_TABLE_CATEGORIES)
+        
+        // Create user_preferences table
+        db.execSQL("""
+            CREATE TABLE IF NOT EXISTS user_preferences (
+                id INTEGER PRIMARY KEY,
+                user_name TEXT,
+                user_nim TEXT,
+                theme_mode INTEGER DEFAULT 0,
+                first_launch INTEGER DEFAULT 1
+            )
+        """)
+    }
+
+
 
     // Todo operations
     fun insertTodo(todo: Todo): Long {
@@ -133,66 +152,87 @@ class TodoDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
     fun getAllTodos(): List<Todo> {
         val todos = mutableListOf<Todo>()
         val db = this.readableDatabase
-        val cursor = db.query(
-            TABLE_TODOS,
-            null,
-            null,
-            null,
-            null,
-            null,
-            "$KEY_CREATED_AT DESC"
-        )
+        
+        try {
+            val cursor = db.query(
+                TABLE_TODOS,
+                null,
+                null,
+                null,
+                null,
+                null,
+                "$KEY_CREATED_AT DESC"
+            )
 
-        if (cursor.moveToFirst()) {
-            do {
-                todos.add(cursorToTodo(cursor))
-            } while (cursor.moveToNext())
+            if (cursor.moveToFirst()) {
+                do {
+                    todos.add(cursorToTodo(cursor))
+                } while (cursor.moveToNext())
+            }
+            cursor.close()
+        } catch (e: Exception) {
+            // If table doesn't exist or has wrong structure, return empty list
+            android.util.Log.e("TodoDatabase", "Error getting all todos: ${e.message}")
         }
-        cursor.close()
+        
         return todos
     }
 
     fun getActiveTodos(): List<Todo> {
         val todos = mutableListOf<Todo>()
         val db = this.readableDatabase
-        val cursor = db.query(
-            TABLE_TODOS,
-            null,
-            "$KEY_IS_COMPLETED = 0",
-            null,
-            null,
-            null,
-            "$KEY_PRIORITY DESC, $KEY_DUE_DATE ASC"
-        )
+        
+        try {
+            val cursor = db.query(
+                TABLE_TODOS,
+                null,
+                "$KEY_IS_COMPLETED = 0",
+                null,
+                null,
+                null,
+                "$KEY_PRIORITY DESC, $KEY_DUE_DATE ASC"
+            )
 
-        if (cursor.moveToFirst()) {
-            do {
-                todos.add(cursorToTodo(cursor))
-            } while (cursor.moveToNext())
+            if (cursor.moveToFirst()) {
+                do {
+                    todos.add(cursorToTodo(cursor))
+                } while (cursor.moveToNext())
+            }
+            cursor.close()
+        } catch (e: Exception) {
+            // If table doesn't exist or has wrong structure, return empty list
+            android.util.Log.e("TodoDatabase", "Error getting active todos: ${e.message}")
         }
-        cursor.close()
+        
         return todos
     }
 
     fun getCompletedTodos(): List<Todo> {
         val todos = mutableListOf<Todo>()
         val db = this.readableDatabase
-        val cursor = db.query(
-            TABLE_TODOS,
-            null,
-            "$KEY_IS_COMPLETED = 1",
-            null,
-            null,
-            null,
-            "$KEY_UPDATED_AT DESC"
-        )
+        
+        try {
+            val cursor = db.query(
+                TABLE_TODOS,
+                null,
+                "$KEY_IS_COMPLETED = 1",
+                null,
+                null,
+                null,
+                "$KEY_UPDATED_AT DESC"
+            )
 
-        if (cursor.moveToFirst()) {
-            do {
-                todos.add(cursorToTodo(cursor))
-            } while (cursor.moveToNext())
+            if (cursor.moveToFirst()) {
+                do {
+                    todos.add(cursorToTodo(cursor))
+                } while (cursor.moveToNext())
+            }
+            cursor.close()
+        } catch (e: Exception) {
+            // If table doesn't exist or has wrong structure, return empty list
+            android.util.Log.e("TodoDatabase", "Error getting completed todos: ${e.message}")
         }
-        cursor.close()
+        
         return todos
     }
 
@@ -230,23 +270,213 @@ class TodoDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
     fun getAllCategories(): List<String> {
         val categories = mutableListOf<String>()
         val db = this.readableDatabase
+        
+        try {
+            val cursor = db.query(
+                TABLE_TODOS,
+                arrayOf("DISTINCT $KEY_CATEGORY"),
+                null,
+                null,
+                null,
+                null,
+                "$KEY_CATEGORY ASC"
+            )
+
+            if (cursor.moveToFirst()) {
+                do {
+                    categories.add(cursor.getString(cursor.getColumnIndexOrThrow(KEY_CATEGORY)))
+                } while (cursor.moveToNext())
+            }
+            cursor.close()
+        } catch (e: Exception) {
+            // If table doesn't exist or has wrong structure, return default categories
+            android.util.Log.e("TodoDatabase", "Error getting categories: ${e.message}")
+            categories.addAll(listOf("Umum", "Kerja", "Pribadi", "Belanja", "Kesehatan"))
+        }
+        
+        return categories
+    }
+
+    // Category operations
+    fun insertCategory(category: Category): Long {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(KEY_NAME, category.name)
+            put(KEY_COLOR, category.color)
+            put(KEY_CREATED_AT, category.createdAt)
+        }
+        return db.insert(TABLE_CATEGORIES, null, values)
+    }
+
+    fun updateCategory(category: Category): Int {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(KEY_NAME, category.name)
+            put(KEY_COLOR, category.color)
+        }
+        return db.update(TABLE_CATEGORIES, values, "$KEY_ID = ?", arrayOf(category.id.toString()))
+    }
+
+    fun deleteCategory(category: Category): Int {
+        val db = this.writableDatabase
+        return db.delete(TABLE_CATEGORIES, "$KEY_ID = ?", arrayOf(category.id.toString()))
+    }
+
+    fun getAllCustomCategories(): List<Category> {
+        val categories = mutableListOf<Category>()
+        val db = this.readableDatabase
         val cursor = db.query(
-            TABLE_TODOS,
-            arrayOf("DISTINCT $KEY_CATEGORY"),
+            TABLE_CATEGORIES,
             null,
             null,
             null,
             null,
-            "$KEY_CATEGORY ASC"
+            null,
+            "$KEY_NAME ASC"
         )
 
         if (cursor.moveToFirst()) {
             do {
-                categories.add(cursor.getString(cursor.getColumnIndexOrThrow(KEY_CATEGORY)))
+                categories.add(cursorToCategory(cursor))
             } while (cursor.moveToNext())
         }
         cursor.close()
         return categories
+    }
+
+    private fun cursorToCategory(cursor: android.database.Cursor): Category {
+        return Category(
+            id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID)),
+            name = cursor.getString(cursor.getColumnIndexOrThrow(KEY_NAME)),
+            color = cursor.getString(cursor.getColumnIndexOrThrow(KEY_COLOR)),
+            createdAt = cursor.getLong(cursor.getColumnIndexOrThrow(KEY_CREATED_AT))
+        )
+    }
+
+    // User preferences operations
+    fun saveUserInfo(name: String, nim: String) {
+        val db = this.writableDatabase
+        
+        // Insert or update user info
+        val values = ContentValues().apply {
+            put("user_name", name)
+            put("user_nim", nim)
+        }
+        
+        // Check if user info exists
+        val cursor = db.query("user_preferences", null, null, null, null, null, null)
+        if (cursor.count > 0) {
+            db.update("user_preferences", values, "id = 1", null)
+        } else {
+            values.put("id", 1)
+            db.insert("user_preferences", null, values)
+        }
+        cursor.close()
+    }
+
+    fun getUserInfo(): Pair<String, String> {
+        val db = this.readableDatabase
+        
+        try {
+            val cursor = db.query("user_preferences", null, "id = 1", null, null, null, null)
+            
+            return if (cursor.moveToFirst()) {
+                val name = cursor.getString(cursor.getColumnIndexOrThrow("user_name")) ?: "User"
+                val nim = cursor.getString(cursor.getColumnIndexOrThrow("user_nim")) ?: "NIM"
+                cursor.close()
+                Pair(name, nim)
+            } else {
+                cursor.close()
+                Pair("User", "NIM")
+            }
+        } catch (e: Exception) {
+            // If table doesn't exist, return default values
+            android.util.Log.e("TodoDatabase", "Error getting user info: ${e.message}")
+            return Pair("User", "NIM")
+        }
+    }
+
+    fun setThemeMode(isDarkMode: Boolean) {
+        val db = this.writableDatabase
+        
+        try {
+            val values = ContentValues().apply {
+                put("theme_mode", if (isDarkMode) 1 else 0)
+            }
+            
+            val cursor = db.query("user_preferences", null, null, null, null, null, null)
+            if (cursor.count > 0) {
+                db.update("user_preferences", values, "id = 1", null)
+            } else {
+                values.put("id", 1)
+                db.insert("user_preferences", null, values)
+            }
+            cursor.close()
+        } catch (e: Exception) {
+            android.util.Log.e("TodoDatabase", "Error setting theme mode: ${e.message}")
+        }
+    }
+
+    fun isDarkMode(): Boolean {
+        val db = this.readableDatabase
+        
+        try {
+            val cursor = db.query("user_preferences", arrayOf("theme_mode"), "id = 1", null, null, null, null)
+            
+            return if (cursor.moveToFirst()) {
+                val isDark = cursor.getInt(cursor.getColumnIndexOrThrow("theme_mode")) == 1
+                cursor.close()
+                isDark
+            } else {
+                cursor.close()
+                false
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("TodoDatabase", "Error checking dark mode: ${e.message}")
+            return false
+        }
+    }
+
+    fun setFirstLaunch(isFirstLaunch: Boolean) {
+        val db = this.writableDatabase
+        
+        try {
+            val values = ContentValues().apply {
+                put("first_launch", if (isFirstLaunch) 1 else 0)
+            }
+            
+            val cursor = db.query("user_preferences", null, null, null, null, null, null)
+            if (cursor.count > 0) {
+                db.update("user_preferences", values, "id = 1", null)
+            } else {
+                values.put("id", 1)
+                db.insert("user_preferences", null, values)
+            }
+            cursor.close()
+        } catch (e: Exception) {
+            android.util.Log.e("TodoDatabase", "Error setting first launch: ${e.message}")
+        }
+    }
+
+    fun isFirstLaunch(): Boolean {
+        val db = this.readableDatabase
+        
+        try {
+            val cursor = db.query("user_preferences", arrayOf("first_launch"), "id = 1", null, null, null, null)
+            
+            return if (cursor.moveToFirst()) {
+                val isFirst = cursor.getInt(cursor.getColumnIndexOrThrow("first_launch")) == 1
+                cursor.close()
+                isFirst
+            } else {
+                cursor.close()
+                true
+            }
+        } catch (e: Exception) {
+            // If table doesn't exist, it's first launch
+            android.util.Log.e("TodoDatabase", "Error checking first launch: ${e.message}")
+            return true
+        }
     }
 
     private fun cursorToTodo(cursor: android.database.Cursor): Todo {

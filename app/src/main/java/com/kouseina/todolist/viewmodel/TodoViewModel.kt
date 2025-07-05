@@ -14,16 +14,42 @@ import java.util.Date
 
 class TodoViewModel(private val repository: TodoRepository) : ViewModel() {
     
-    val allTodos = repository.getAllTodos()
-    val activeTodos = repository.getActiveTodos()
-    val completedTodos = repository.getCompletedTodos()
-    val categories = repository.getAllCategories()
+    private val _allTodos = MutableStateFlow<List<Todo>>(emptyList())
+    val allTodos: StateFlow<List<Todo>> = _allTodos.asStateFlow()
+    
+    private val _activeTodos = MutableStateFlow<List<Todo>>(emptyList())
+    val activeTodos: StateFlow<List<Todo>> = _activeTodos.asStateFlow()
+    
+    private val _completedTodos = MutableStateFlow<List<Todo>>(emptyList())
+    val completedTodos: StateFlow<List<Todo>> = _completedTodos.asStateFlow()
+    
+    private val _categories = MutableStateFlow<List<String>>(emptyList())
+    val categories: StateFlow<List<String>> = _categories.asStateFlow()
     
     private val _selectedTodo = MutableStateFlow<Todo?>(null)
     val selectedTodo: StateFlow<Todo?> = _selectedTodo.asStateFlow()
     
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
+    init {
+        refreshTodos()
+    }
+
+    fun refreshTodos() {
+        viewModelScope.launch {
+            repository.getAllTodos().collect { todos ->
+                _allTodos.value = todos
+                _activeTodos.value = todos.filter { !it.isCompleted }
+                _completedTodos.value = todos.filter { it.isCompleted }
+            }
+        }
+        viewModelScope.launch {
+            repository.getAllCategories().collect { cats ->
+                _categories.value = cats
+            }
+        }
+    }
     
     fun insertTodo(
         title: String,
@@ -36,6 +62,7 @@ class TodoViewModel(private val repository: TodoRepository) : ViewModel() {
             _isLoading.value = true
             try {
                 repository.insertTodo(title, description, priority, category, dueDate)
+                refreshTodos()
             } finally {
                 _isLoading.value = false
             }
@@ -47,6 +74,7 @@ class TodoViewModel(private val repository: TodoRepository) : ViewModel() {
             _isLoading.value = true
             try {
                 repository.updateTodo(todo.copy(updatedAt = Date()))
+                refreshTodos()
             } finally {
                 _isLoading.value = false
             }
@@ -56,12 +84,14 @@ class TodoViewModel(private val repository: TodoRepository) : ViewModel() {
     fun deleteTodo(todo: Todo) {
         viewModelScope.launch {
             repository.deleteTodo(todo)
+            refreshTodos()
         }
     }
     
     fun toggleTodoStatus(todo: Todo) {
         viewModelScope.launch {
             repository.updateTodoStatus(todo.id, !todo.isCompleted)
+            refreshTodos()
         }
     }
     
@@ -76,8 +106,7 @@ class TodoViewModel(private val repository: TodoRepository) : ViewModel() {
     }
 
     // User preferences
-    fun getUserName(): String = repository.getUserName()
-    fun getUserNIM(): String = repository.getUserNIM()
+    fun getUserInfo(): Pair<String, String> = repository.getUserInfo()
     fun saveUserInfo(name: String, nim: String) = repository.saveUserInfo(name, nim)
     
     fun isDarkMode(): Boolean = repository.isDarkMode()

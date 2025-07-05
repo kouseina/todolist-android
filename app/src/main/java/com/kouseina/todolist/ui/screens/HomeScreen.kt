@@ -50,13 +50,13 @@ fun HomeScreen(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = viewModel.getUserName(),
+                    text = viewModel.getUserInfo().first,
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
-                    text = "NIM: ${viewModel.getUserNIM()}",
+                    text = "NIM: ${viewModel.getUserInfo().second}",
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
                 )

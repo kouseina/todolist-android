@@ -3,9 +3,6 @@ package com.kouseina.todolist.data.database
 import android.content.Context
 import com.kouseina.todolist.data.model.Category
 import com.kouseina.todolist.repository.TodoRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.flow.first
 

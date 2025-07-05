@@ -16,13 +16,11 @@ Aplikasi daftar tugas (ToDo List) yang modern dan intuitif untuk Android, dibang
 ## 🛠️ Teknologi yang Digunakan
 
 - **Jetpack Compose**: UI toolkit modern untuk Android
-- **SQLite Database**: Database lokal untuk penyimpanan data tugas
-- **SharedPreferences**: Penyimpanan preferensi pengguna dan kategori
+- **SQLite Database**: Database lokal untuk semua data (tugas, kategori, preferensi)
 - **ViewModel & LiveData**: Arsitektur MVVM untuk manajemen state
 - **Navigation Compose**: Navigasi antar halaman
 - **Material Design 3**: Sistem desain yang konsisten
 - **Kotlin Coroutines**: Pemrograman asynchronous
-- **Gson**: Serialisasi JSON untuk SharedPreferences
 
 ## 📱 Screenshots
 
@@ -106,8 +104,7 @@ Aplikasi mengikuti arsitektur **MVVM (Model-View-ViewModel)** dengan komponen-ko
 - **View**: Jetpack Compose UI components
 - **ViewModel**: Business logic dan state management
 - **Repository**: Data access layer
-- **Database**: SQLite database untuk penyimpanan tugas
-- **SharedPreferences**: Penyimpanan preferensi dan kategori
+- **Database**: SQLite database untuk semua data (tugas, kategori, preferensi)
 
 ## 🌍 Lokalisasi
 
@@ -126,7 +123,7 @@ Untuk menambah bahasa baru:
 - Database: SQLite Native
 - Migrasi: Manual dengan SQLiteOpenHelper
 - Backup: Mendukung Android Auto Backup
-- SharedPreferences: Penyimpanan preferensi dan kategori
+- Struktur: 3 tabel (todos, categories, user_preferences)
 
 ### Build Configuration
 - Min SDK: 24 (Android 7.0)
@@ -144,11 +141,8 @@ implementation("androidx.compose.ui:ui-tooling-preview")
 // Navigation
 implementation("androidx.navigation:navigation-compose")
 
-// SQLite & SharedPreferences
+// SQLite Database
 // Built-in Android APIs, no additional dependencies needed
-
-// Gson for JSON serialization
-implementation("com.google.code.gson:gson:2.10.1")
 
 // ViewModel & LiveData
 implementation("androidx.lifecycle:lifecycle-viewmodel-compose")

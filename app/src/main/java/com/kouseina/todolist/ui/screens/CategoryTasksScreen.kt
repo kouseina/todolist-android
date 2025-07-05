@@ -9,9 +9,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.collectAsState
+import com.kouseina.todolist.R
 import com.kouseina.todolist.ui.components.TodoCard
 import com.kouseina.todolist.viewmodel.TodoViewModel
 
@@ -46,7 +48,7 @@ fun CategoryTasksScreen(
             IconButton(onClick = onNavigateBack) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back"
+                    contentDescription = stringResource(R.string.cd_back)
                 )
             }
 
@@ -59,7 +61,7 @@ fun CategoryTasksScreen(
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "${categoryTodos.size} tasks",
+                    text = stringResource(R.string.tasks_count, categoryTodos.size),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -74,13 +76,13 @@ fun CategoryTasksScreen(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             StatCard(
-                title = "Active",
+                title = stringResource(R.string.active_tasks),
                 count = activeTodos.size,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.weight(1f)
             )
             StatCard(
-                title = "Completed",
+                title = stringResource(R.string.completed_tasks),
                 count = completedTodos.size,
                 color = MaterialTheme.colorScheme.tertiary,
                 modifier = Modifier.weight(1f)
@@ -97,7 +99,7 @@ fun CategoryTasksScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "No tasks in this category yet",
+                    text = stringResource(R.string.no_tasks_yet),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -109,7 +111,7 @@ fun CategoryTasksScreen(
                 if (activeTodos.isNotEmpty()) {
                     item {
                         Text(
-                            text = "Active Tasks",
+                            text = stringResource(R.string.active_tasks),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold
                         )
@@ -130,7 +132,7 @@ fun CategoryTasksScreen(
                     item {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = "Completed Tasks",
+                            text = stringResource(R.string.completed_tasks),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold
                         )

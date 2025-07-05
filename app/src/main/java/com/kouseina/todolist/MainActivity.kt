@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -48,10 +49,10 @@ fun TodoApp() {
 
     // Define bottom navigation items
     val bottomNavItems = listOf(
-        BottomNavItem("home", "Home", Icons.Default.Home),
-        BottomNavItem("tasks", "Tasks", Icons.Default.Assignment),
-        BottomNavItem("categories", "Categories", Icons.Default.Category),
-        BottomNavItem("statistics", "Stats", Icons.Default.Analytics)
+        BottomNavItem("home", stringResource(R.string.nav_home), Icons.Default.Home),
+        BottomNavItem("tasks", stringResource(R.string.nav_tasks), Icons.Default.Assignment),
+        BottomNavItem("categories", stringResource(R.string.nav_categories), Icons.Default.Category),
+        BottomNavItem("statistics", stringResource(R.string.nav_statistics), Icons.Default.Analytics)
     )
 
     // Check if current route should show bottom navigation

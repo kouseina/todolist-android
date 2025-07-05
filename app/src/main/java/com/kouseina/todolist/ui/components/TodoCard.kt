@@ -12,10 +12,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.kouseina.todolist.R
 import com.kouseina.todolist.data.model.Priority
 import com.kouseina.todolist.data.model.Todo
 import java.text.SimpleDateFormat
@@ -87,7 +89,7 @@ fun TodoCard(
                 IconButton(onClick = onDelete) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Delete",
+                        contentDescription = stringResource(R.string.cd_delete),
                         tint = MaterialTheme.colorScheme.error
                     )
                 }
@@ -114,7 +116,12 @@ fun TodoCard(
                     Spacer(modifier = Modifier.width(8.dp))
                     
                     Text(
-                        text = todo.priority.name,
+                        text = when (todo.priority) {
+                            Priority.LOW -> stringResource(R.string.priority_low)
+                            Priority.MEDIUM -> stringResource(R.string.priority_medium)
+                            Priority.HIGH -> stringResource(R.string.priority_high)
+                            Priority.URGENT -> stringResource(R.string.priority_urgent)
+                        },
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -145,7 +152,7 @@ fun TodoCard(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Schedule,
-                            contentDescription = "Due date",
+                            contentDescription = stringResource(R.string.cd_due_date),
                             tint = if (isOverdue) MaterialTheme.colorScheme.error 
                                   else MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(16.dp)

@@ -9,8 +9,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.kouseina.todolist.R
 import com.kouseina.todolist.data.model.Priority
 import com.kouseina.todolist.viewmodel.TodoViewModel
 import java.text.SimpleDateFormat
@@ -71,12 +73,12 @@ fun AddEditTodoScreen(
             IconButton(onClick = onNavigateBack) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back"
+                    contentDescription = stringResource(R.string.cd_back)
                 )
             }
 
             Text(
-                text = if (isEditing) "Edit Task" else "Add New Task",
+                text = if (isEditing) stringResource(R.string.edit_task) else stringResource(R.string.add_new_task),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
@@ -114,7 +116,7 @@ fun AddEditTodoScreen(
                         strokeWidth = 2.dp
                     )
                 } else {
-                    Text("Save")
+                    Text(stringResource(R.string.save))
                 }
             }
         }
@@ -125,7 +127,7 @@ fun AddEditTodoScreen(
         OutlinedTextField(
             value = title,
             onValueChange = { title = it },
-            label = { Text("Task Title") },
+            label = { Text(stringResource(R.string.task_title)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             leadingIcon = {
@@ -142,7 +144,7 @@ fun AddEditTodoScreen(
         OutlinedTextField(
             value = description,
             onValueChange = { description = it },
-            label = { Text("Description (Optional)") },
+            label = { Text(stringResource(R.string.description_optional)) },
             modifier = Modifier.fillMaxWidth(),
             minLines = 3,
             maxLines = 5,
@@ -158,7 +160,7 @@ fun AddEditTodoScreen(
 
         // Priority Selection
         Text(
-            text = "Priority",
+            text = stringResource(R.string.priority),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Medium
         )
@@ -170,12 +172,21 @@ fun AddEditTodoScreen(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Priority.values().forEach { priority ->
-                FilterChip(
-                    onClick = { selectedPriority = priority },
-                    label = { Text(priority.name) },
-                    selected = selectedPriority == priority,
-                    modifier = Modifier.weight(1f)
-                )
+                            FilterChip(
+                onClick = { selectedPriority = priority },
+                label = { 
+                    Text(
+                        when (priority) {
+                            Priority.LOW -> stringResource(R.string.priority_low)
+                            Priority.MEDIUM -> stringResource(R.string.priority_medium)
+                            Priority.HIGH -> stringResource(R.string.priority_high)
+                            Priority.URGENT -> stringResource(R.string.priority_urgent)
+                        }
+                    ) 
+                },
+                selected = selectedPriority == priority,
+                modifier = Modifier.weight(1f)
+            )
             }
         }
 
@@ -185,14 +196,14 @@ fun AddEditTodoScreen(
         OutlinedTextField(
             value = selectedCategory,
             onValueChange = { },
-            label = { Text("Category") },
+            label = { Text(stringResource(R.string.category)) },
             modifier = Modifier.fillMaxWidth(),
             readOnly = true,
             trailingIcon = {
                 IconButton(onClick = { showCategoryDialog = true }) {
                     Icon(
                         imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = "Select Category"
+                        contentDescription = stringResource(R.string.cd_select_category)
                     )
                 }
             },
@@ -212,7 +223,7 @@ fun AddEditTodoScreen(
                 SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(it)
             } ?: "",
             onValueChange = { },
-            label = { Text("Due Date (Optional)") },
+            label = { Text(stringResource(R.string.due_date_optional)) },
             modifier = Modifier.fillMaxWidth(),
             readOnly = true,
             trailingIcon = {
@@ -221,14 +232,14 @@ fun AddEditTodoScreen(
                         IconButton(onClick = { dueDate = null }) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
-                                contentDescription = "Clear Date"
+                                contentDescription = stringResource(R.string.cd_clear_date)
                             )
                         }
                     }
                     IconButton(onClick = { showDatePicker = true }) {
                         Icon(
                             imageVector = Icons.Default.DateRange,
-                            contentDescription = "Select Date"
+                            contentDescription = stringResource(R.string.cd_select_date)
                         )
                     }
                 }
@@ -246,10 +257,16 @@ fun AddEditTodoScreen(
     if (showCategoryDialog) {
         AlertDialog(
             onDismissRequest = { showCategoryDialog = false },
-            title = { Text("Select Category") },
+            title = { Text(stringResource(R.string.select_category)) },
             text = {
                 Column {
-                    val availableCategories = listOf("General", "Work", "Personal", "Shopping", "Health") + categories
+                    val availableCategories = listOf(
+                        stringResource(R.string.category_general),
+                        stringResource(R.string.category_work),
+                        stringResource(R.string.category_personal),
+                        stringResource(R.string.category_shopping),
+                        stringResource(R.string.category_health)
+                    ) + categories
                     availableCategories.distinct().forEach { category ->
                         TextButton(
                             onClick = {
@@ -268,7 +285,7 @@ fun AddEditTodoScreen(
             },
             confirmButton = {
                 TextButton(onClick = { showCategoryDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -278,10 +295,10 @@ fun AddEditTodoScreen(
     if (showDatePicker) {
         AlertDialog(
             onDismissRequest = { showDatePicker = false },
-            title = { Text("Select Due Date") },
+            title = { Text(stringResource(R.string.select_due_date)) },
             text = {
                 Column {
-                    Text("Select a date for this task")
+                    Text(stringResource(R.string.select_date_for_task))
                     Spacer(modifier = Modifier.height(16.dp))
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -294,7 +311,7 @@ fun AddEditTodoScreen(
                                 showDatePicker = false
                             }
                         ) {
-                            Text("Tomorrow")
+                            Text(stringResource(R.string.tomorrow))
                         }
                         TextButton(
                             onClick = {
@@ -304,7 +321,7 @@ fun AddEditTodoScreen(
                                 showDatePicker = false
                             }
                         ) {
-                            Text("Next Week")
+                            Text(stringResource(R.string.next_week))
                         }
                     }
                 }
@@ -316,12 +333,12 @@ fun AddEditTodoScreen(
                         showDatePicker = false
                     }
                 ) {
-                    Text("Today")
+                    Text(stringResource(R.string.today))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDatePicker = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )

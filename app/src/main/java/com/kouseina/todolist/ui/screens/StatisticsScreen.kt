@@ -17,9 +17,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.collectAsState
+import com.kouseina.todolist.R
 import com.kouseina.todolist.data.model.Priority
 import com.kouseina.todolist.viewmodel.TodoViewModel
 
@@ -61,7 +63,7 @@ fun StatisticsScreen(
     ) {
         item {
             Text(
-                text = "Statistics",
+                text = stringResource(R.string.statistics),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
@@ -74,14 +76,14 @@ fun StatisticsScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 OverviewCard(
-                    title = "Total Tasks",
+                    title = stringResource(R.string.total_tasks),
                     value = allTodos.size.toString(),
                     icon = Icons.Default.Assignment,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.weight(1f)
                 )
                 OverviewCard(
-                    title = "Completed",
+                    title = stringResource(R.string.completed_tasks),
                     value = completedTodos.size.toString(),
                     icon = Icons.Default.CheckCircle,
                     color = MaterialTheme.colorScheme.tertiary,
@@ -96,14 +98,14 @@ fun StatisticsScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 OverviewCard(
-                    title = "Active",
+                    title = stringResource(R.string.active_tasks),
                     value = activeTodos.size.toString(),
                     icon = Icons.Default.PendingActions,
                     color = MaterialTheme.colorScheme.secondary,
                     modifier = Modifier.weight(1f)
                 )
                 OverviewCard(
-                    title = "Overdue",
+                    title = stringResource(R.string.overdue_tasks),
                     value = overdueTodos.size.toString(),
                     icon = Icons.Default.Warning,
                     color = MaterialTheme.colorScheme.error,
@@ -131,7 +133,7 @@ fun StatisticsScreen(
         if (categoryStats.isNotEmpty()) {
             item {
                 Text(
-                    text = "Categories",
+                    text = stringResource(R.string.categories),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
@@ -216,7 +218,7 @@ private fun CompletionRateCard(completionRate: Int) {
             modifier = Modifier.padding(20.dp)
         ) {
             Text(
-                text = "Completion Rate",
+                text = stringResource(R.string.completion_rate),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
@@ -243,12 +245,12 @@ private fun CompletionRateCard(completionRate: Int) {
 
                 Column {
                     Text(
-                        text = "Great progress!",
+                        text = stringResource(R.string.great_progress),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Medium
                     )
                     Text(
-                        text = "Keep up the good work",
+                        text = stringResource(R.string.keep_up_good_work),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

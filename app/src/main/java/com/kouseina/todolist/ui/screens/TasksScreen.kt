@@ -9,9 +9,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.collectAsState
+import com.kouseina.todolist.R
 import com.kouseina.todolist.data.model.Priority
 import com.kouseina.todolist.ui.components.TodoCard
 import com.kouseina.todolist.viewmodel.TodoViewModel
@@ -30,16 +32,16 @@ fun TasksScreen(
     var selectedPriority by remember { mutableStateOf<Priority?>(null) }
     var showFilterDialog by remember { mutableStateOf(false) }
 
-    // Filter todos based on selected filters
-    val filteredTodos = remember(allTodos, selectedFilter, selectedPriority) {
-        var filtered = allTodos
+            // Filter todos based on selected filters
+        val filteredTodos = remember(allTodos, selectedFilter, selectedPriority) {
+            var filtered = allTodos
 
-        // Filter by status
-        filtered = when (selectedFilter) {
-            "Active" -> filtered.filter { !it.isCompleted }
-            "Completed" -> filtered.filter { it.isCompleted }
-            else -> filtered
-        }
+            // Filter by status
+            filtered = when (selectedFilter) {
+                "Active" -> filtered.filter { !it.isCompleted }
+                "Completed" -> filtered.filter { it.isCompleted }
+                else -> filtered
+            }
 
         // Filter by priority
         selectedPriority?.let { priority ->
@@ -61,7 +63,7 @@ fun TasksScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "All Tasks",
+                text = stringResource(R.string.all_tasks),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
@@ -69,7 +71,7 @@ fun TasksScreen(
             IconButton(onClick = { showFilterDialog = true }) {
                 Icon(
                     imageVector = Icons.Default.FilterList,
-                    contentDescription = "Filter"
+                    contentDescription = stringResource(R.string.cd_filter)
                 )
             }
         }
@@ -83,17 +85,17 @@ fun TasksScreen(
         ) {
             FilterChip(
                 onClick = { selectedFilter = "All" },
-                label = { Text("All") },
+                label = { Text(stringResource(R.string.all)) },
                 selected = selectedFilter == "All"
             )
             FilterChip(
                 onClick = { selectedFilter = "Active" },
-                label = { Text("Active") },
+                label = { Text(stringResource(R.string.active)) },
                 selected = selectedFilter == "Active"
             )
             FilterChip(
                 onClick = { selectedFilter = "Completed" },
-                label = { Text("Completed") },
+                label = { Text(stringResource(R.string.completed)) },
                 selected = selectedFilter == "Completed"
             )
         }
@@ -102,12 +104,24 @@ fun TasksScreen(
             Spacer(modifier = Modifier.height(8.dp))
             FilterChip(
                 onClick = { selectedPriority = null },
-                label = { Text("${selectedPriority!!.name} Priority") },
+                label = { 
+                    Text(
+                        stringResource(
+                            R.string.priority_filter,
+                            when (selectedPriority!!) {
+                                Priority.LOW -> stringResource(R.string.priority_low)
+                                Priority.MEDIUM -> stringResource(R.string.priority_medium)
+                                Priority.HIGH -> stringResource(R.string.priority_high)
+                                Priority.URGENT -> stringResource(R.string.priority_urgent)
+                            }
+                        )
+                    ) 
+                },
                 selected = true,
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Remove filter",
+                        contentDescription = stringResource(R.string.cd_remove_filter),
                         modifier = Modifier.size(16.dp)
                     )
                 }
@@ -118,7 +132,7 @@ fun TasksScreen(
 
         // Tasks count
         Text(
-            text = "${filteredTodos.size} tasks",
+            text = stringResource(R.string.tasks_count, filteredTodos.size),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -138,7 +152,7 @@ fun TasksScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "No tasks found",
+                            text = stringResource(R.string.no_tasks_yet),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -161,7 +175,7 @@ fun TasksScreen(
     if (showFilterDialog) {
         AlertDialog(
             onDismissRequest = { showFilterDialog = false },
-            title = { Text("Filter by Priority") },
+            title = { Text(stringResource(R.string.filter_by_priority)) },
             text = {
                 Column {
                     Priority.values().forEach { priority ->
@@ -177,11 +191,18 @@ fun TasksScreen(
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(priority.name)
+                                Text(
+                                    when (priority) {
+                                        Priority.LOW -> stringResource(R.string.priority_low)
+                                        Priority.MEDIUM -> stringResource(R.string.priority_medium)
+                                        Priority.HIGH -> stringResource(R.string.priority_high)
+                                        Priority.URGENT -> stringResource(R.string.priority_urgent)
+                                    }
+                                )
                                 if (selectedPriority == priority) {
                                     Icon(
                                         imageVector = Icons.Default.Check,
-                                        contentDescription = "Selected",
+                                        contentDescription = stringResource(R.string.cd_selected),
                                         modifier = Modifier.size(16.dp)
                                     )
                                 }
@@ -192,7 +213,7 @@ fun TasksScreen(
             },
             confirmButton = {
                 TextButton(onClick = { showFilterDialog = false }) {
-                    Text("Done")
+                    Text(stringResource(R.string.done))
                 }
             }
         )

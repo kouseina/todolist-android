@@ -1,3 +1,104 @@
 <resources>
     <string name="app_name">ToDoList</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_tasks">Tasks</string>
+    <string name="nav_categories">Categories</string>
+    <string name="nav_statistics">Stats</string>
+    
+    <!-- Common -->
+    <string name="back">Back</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
+    <string name="delete">Delete</string>
+    <string name="filter">Filter</string>
+    <string name="select_category">Select Category</string>
+    <string name="clear_date">Clear Date</string>
+    <string name="select_date">Select Date</string>
+    <string name="remove_filter">Remove filter</string>
+    <string name="selected">Selected</string>
+    
+    <!-- Add/Edit Task Screen -->
+    <string name="edit_task">Edit Task</string>
+    <string name="add_new_task">Add New Task</string>
+    <string name="task_title">Task Title</string>
+    <string name="description_optional">Description (Optional)</string>
+    <string name="priority">Priority</string>
+    <string name="category">Category</string>
+    <string name="due_date_optional">Due Date (Optional)</string>
+    
+    <!-- Priority Levels -->
+    <string name="priority_low">LOW</string>
+    <string name="priority_medium">MEDIUM</string>
+    <string name="priority_high">HIGH</string>
+    <string name="priority_urgent">URGENT</string>
+    
+    <!-- Default Categories -->
+    <string name="category_general">General</string>
+    <string name="category_work">Work</string>
+    <string name="category_personal">Personal</string>
+    <string name="category_shopping">Shopping</string>
+    <string name="category_health">Health</string>
+    
+    <!-- Tasks Screen -->
+    <string name="all_tasks">All Tasks</string>
+    <string name="all">All</string>
+    <string name="active">Active</string>
+    <string name="completed">Completed</string>
+    <string name="tasks_count">%d tasks</string>
+    <string name="filter_by_priority">Filter by Priority</string>
+    <string name="priority_filter">%s Priority</string>
+    
+    <!-- Categories Screen -->
+    <string name="categories">Categories</string>
+    <string name="no_categories_yet">No categories yet</string>
+    <string name="categories_will_appear">Categories will appear here when you create tasks</string>
+    <string name="active_tasks_count">%d active, %d total</string>
+    
+    <!-- Statistics Screen -->
+    <string name="statistics">Statistics</string>
+    <string name="total_tasks">Total Tasks</string>
+    <string name="completed_tasks">Completed</string>
+    <string name="active_tasks">Active</string>
+    <string name="overdue_tasks">Overdue</string>
+    <string name="completion_rate">Completion Rate</string>
+    <string name="great_progress">Great progress!</string>
+    <string name="keep_up_good_work">Keep up the good work</string>
+    <string name="quick_insights">Quick Insights</string>
+    <string name="start_first_task">Start by creating your first task!</string>
+    <string name="all_tasks_completed">🎉 All tasks completed! Great job!</string>
+    <string name="overdue_tasks_warning">⚠️ You have %d overdue task</string>
+    <string name="overdue_tasks_warning_plural">⚠️ You have %d overdue tasks</string>
+    <string name="no_overdue_tasks">✅ No overdue tasks - you\'re on track!</string>
+    <string name="tasks_organized">📁 Tasks organized in %d categories</string>
+    <string name="excellent_completion">🔥 Excellent completion rate: %d%%</string>
+    <string name="good_completion">👍 Good completion rate: %d%%</string>
+    <string name="room_improvement">💪 Room for improvement: %d%% completion rate</string>
+    
+    <!-- Home Screen -->
+    <string name="no_tasks_yet">No tasks yet</string>
+    <string name="create_your_first_task">Create your first task to get started!</string>
+    <string name="overdue">Overdue</string>
+    <string name="due_today">Due Today</string>
+    <string name="due_this_week">Due This Week</string>
+    
+    <!-- Date Picker -->
+    <string name="select_due_date">Select Due Date</string>
+    <string name="select_date_for_task">Select a date for this task</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="next_week">Next Week</string>
+    <string name="today">Today</string>
+    
+    <!-- Content Descriptions -->
+    <string name="cd_back">Back</string>
+    <string name="cd_filter">Filter</string>
+    <string name="cd_delete">Delete</string>
+    <string name="cd_select_category">Select Category</string>
+    <string name="cd_clear_date">Clear Date</string>
+    <string name="cd_select_date">Select Date</string>
+    <string name="cd_remove_filter">Remove filter</string>
+    <string name="cd_selected">Selected</string>
+    <string name="cd_due_date">Due date</string>
 </resources>

@@ -1,0 +1,104 @@
+<resources>
+    <string name="app_name">Daftar Tugas</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">Beranda</string>
+    <string name="nav_tasks">Tugas</string>
+    <string name="nav_categories">Kategori</string>
+    <string name="nav_statistics">Statistik</string>
+    
+    <!-- Common -->
+    <string name="back">Kembali</string>
+    <string name="save">Simpan</string>
+    <string name="cancel">Batal</string>
+    <string name="done">Selesai</string>
+    <string name="delete">Hapus</string>
+    <string name="filter">Filter</string>
+    <string name="select_category">Pilih Kategori</string>
+    <string name="clear_date">Hapus Tanggal</string>
+    <string name="select_date">Pilih Tanggal</string>
+    <string name="remove_filter">Hapus filter</string>
+    <string name="selected">Dipilih</string>
+    
+    <!-- Add/Edit Task Screen -->
+    <string name="edit_task">Edit Tugas</string>
+    <string name="add_new_task">Tambah Tugas Baru</string>
+    <string name="task_title">Judul Tugas</string>
+    <string name="description_optional">Deskripsi (Opsional)</string>
+    <string name="priority">Prioritas</string>
+    <string name="category">Kategori</string>
+    <string name="due_date_optional">Tanggal Jatuh Tempo (Opsional)</string>
+    
+    <!-- Priority Levels -->
+    <string name="priority_low">RENDAH</string>
+    <string name="priority_medium">SEDANG</string>
+    <string name="priority_high">TINGGI</string>
+    <string name="priority_urgent">MENDESAK</string>
+    
+    <!-- Default Categories -->
+    <string name="category_general">Umum</string>
+    <string name="category_work">Kerja</string>
+    <string name="category_personal">Pribadi</string>
+    <string name="category_shopping">Belanja</string>
+    <string name="category_health">Kesehatan</string>
+    
+    <!-- Tasks Screen -->
+    <string name="all_tasks">Semua Tugas</string>
+    <string name="all">Semua</string>
+    <string name="active">Aktif</string>
+    <string name="completed">Selesai</string>
+    <string name="tasks_count">%d tugas</string>
+    <string name="filter_by_priority">Filter berdasarkan Prioritas</string>
+    <string name="priority_filter">Prioritas %s</string>
+    
+    <!-- Categories Screen -->
+    <string name="categories">Kategori</string>
+    <string name="no_categories_yet">Belum ada kategori</string>
+    <string name="categories_will_appear">Kategori akan muncul di sini ketika Anda membuat tugas</string>
+    <string name="active_tasks_count">%d aktif, %d total</string>
+    
+    <!-- Statistics Screen -->
+    <string name="statistics">Statistik</string>
+    <string name="total_tasks">Total Tugas</string>
+    <string name="completed_tasks">Selesai</string>
+    <string name="active_tasks">Aktif</string>
+    <string name="overdue_tasks">Terlambat</string>
+    <string name="completion_rate">Tingkat Penyelesaian</string>
+    <string name="great_progress">Progres yang bagus!</string>
+    <string name="keep_up_good_work">Teruskan kerja yang baik</string>
+    <string name="quick_insights">Wawasan Cepat</string>
+    <string name="start_first_task">Mulai dengan membuat tugas pertama Anda!</string>
+    <string name="all_tasks_completed">🎉 Semua tugas selesai! Kerja bagus!</string>
+    <string name="overdue_tasks_warning">⚠️ Anda memiliki %d tugas terlambat</string>
+    <string name="overdue_tasks_warning_plural">⚠️ Anda memiliki %d tugas terlambat</string>
+    <string name="no_overdue_tasks">✅ Tidak ada tugas terlambat - Anda tetap di jalur!</string>
+    <string name="tasks_organized">📁 Tugas diorganisir dalam %d kategori</string>
+    <string name="excellent_completion">🔥 Tingkat penyelesaian luar biasa: %d%%</string>
+    <string name="good_completion">👍 Tingkat penyelesaian bagus: %d%%</string>
+    <string name="room_improvement">💪 Ruang untuk perbaikan: tingkat penyelesaian %d%%</string>
+    
+    <!-- Home Screen -->
+    <string name="no_tasks_yet">Belum ada tugas</string>
+    <string name="create_your_first_task">Buat tugas pertama Anda untuk memulai!</string>
+    <string name="overdue">Terlambat</string>
+    <string name="due_today">Jatuh Tempo Hari Ini</string>
+    <string name="due_this_week">Jatuh Tempo Minggu Ini</string>
+    
+    <!-- Date Picker -->
+    <string name="select_due_date">Pilih Tanggal Jatuh Tempo</string>
+    <string name="select_date_for_task">Pilih tanggal untuk tugas ini</string>
+    <string name="tomorrow">Besok</string>
+    <string name="next_week">Minggu Depan</string>
+    <string name="today">Hari Ini</string>
+    
+    <!-- Content Descriptions -->
+    <string name="cd_back">Kembali</string>
+    <string name="cd_filter">Filter</string>
+    <string name="cd_delete">Hapus</string>
+    <string name="cd_select_category">Pilih Kategori</string>
+    <string name="cd_clear_date">Hapus Tanggal</string>
+    <string name="cd_select_date">Pilih Tanggal</string>
+    <string name="cd_remove_filter">Hapus filter</string>
+    <string name="cd_selected">Dipilih</string>
+    <string name="cd_due_date">Tanggal jatuh tempo</string>
+</resources> 
